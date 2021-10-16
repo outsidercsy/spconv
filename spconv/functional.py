@@ -39,7 +39,7 @@ class SparseConvFunction(Function):
 
         input_bp, filters_bp = ops.indice_conv_backward(features,
                                                         filters,
-                                                        grad_output,
+                                                        grad_output.contiguous(),
                                                         indice_pairs,
                                                         indice_pair_num,
                                                         False,
@@ -68,7 +68,7 @@ class SparseInverseConvFunction(Function):
         indice_pairs, indice_pair_num, features, filters = ctx.saved_tensors
         input_bp, filters_bp = ops.indice_conv_backward(features,
                                                         filters,
-                                                        grad_output,
+                                                        grad_output.contiguous(),
                                                         indice_pairs,
                                                         indice_pair_num,
                                                         True,
@@ -98,7 +98,7 @@ class SubMConvFunction(Function):
         indice_pairs, indice_pair_num, features, filters = ctx.saved_tensors
         input_bp, filters_bp = ops.indice_conv_backward(features,
                                                         filters,
-                                                        grad_output,
+                                                        grad_output.contiguous(),
                                                         indice_pairs,
                                                         indice_pair_num,
                                                         False,
@@ -120,7 +120,7 @@ class SparseMaxPoolFunction(Function):
     @staticmethod
     def backward(ctx, grad_output):
         indice_pairs, indice_pair_num, features, out = ctx.saved_tensors
-        input_bp = ops.indice_maxpool_backward(features, out, grad_output,
+        input_bp = ops.indice_maxpool_backward(features, out, grad_output.contiguous(),
                                                indice_pairs, indice_pair_num)
         return input_bp, None, None, None
 
